@@ -3,7 +3,7 @@
 This is the official repository of the "Neural Concept Binder" article.
 This repository contains all source code required to reproduce the experiments of the paper. 
 
-![Overview of Neural Concept Binder](./figures/main.pdf)
+![Overview of Neural Concept Binder](./figures/main.png)
 
 ## How to Run:
 
@@ -11,15 +11,15 @@ This repository contains all source code required to reproduce the experiments o
 
 Here we provide information on how to download the novel and evaluated datasets.
 
-We provide our novel CLEVR-Sudoku dataset at <https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip>
+We provide our novel CLEVR-Sudoku dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip).
 
 For the CLEVR-Easy dataset we refer to <https://github.com/singhgautam/sysbinder>.
 
-For the CLEVR dataset we refer to <https://hessenbox.tu-darmstadt.de/getlink/fiTkYuSoR2VvA2JLj7EACkxo/CLEVR-4.zip>.
+We provide the used CLEVR dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiTkYuSoR2VvA2JLj7EACkxo/CLEVR-4.zip).
 
 We provide the datasets used to finetune NCBs hard binder (i.e., distill the concepts) at:
-<https://hessenbox.tu-darmstadt.de/getlink/fiHHPQ537ViPaxdz6vD7e2d5/CLEVR-Easy-1.zip> 
-and <https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV/CLEVR-4-1.zip>
+[CLEVR-Easy-1](https://hessenbox.tu-darmstadt.de/getlink/fiHHPQ537ViPaxdz6vD7e2d5/CLEVR-Easy-1.zip) 
+and [CLEVR-1](https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV/CLEVR-4-1.zip).
 
 These represent versions of the original datasets that contain single objects.
 
@@ -28,9 +28,8 @@ the CLEVR-Hans dataset.
 
 ### Model Checkpoints
 
-We provide checkpoints of all trained models of our experiments as well as parameter files at:
-<https://hessenbox.tu-darmstadt.de/getlink/fiNmsxY8anr52RGTwsQtzSxW/CLEVR-Easy.zip> for CLEVR-Easy
-and <https://hessenbox.tu-darmstadt.de/getlink/fi6WzuWtQ87Px5P3ewEVNQyZ/CLEVR-4.zip> for CLEVR. 
+We provide checkpoints of all trained models of our experiments as well as parameter files for [CLEVR-Easy](https://hessenbox.tu-darmstadt.de/getlink/fiNmsxY8anr52RGTwsQtzSxW/CLEVR-Easy.zip)
+and [CLEVR](https://hessenbox.tu-darmstadt.de/getlink/fi6WzuWtQ87Px5P3ewEVNQyZ/CLEVR-4.zip). 
 
 ### Docker
 
@@ -66,3 +65,6 @@ human-based revision evaluations in ```revise_via_user/``` in the context of Q3.
 
 ```clevr_hans/``` contains the code relevant for our evaluations on subsymbolic computations based on 
 the CLEVR-Hans dataset in the context of Q4.
+
+```data_creation_scripts/``` contains the json files used for creating the CLEVR-Easy-1 and CLEVR-1 datasets
+based on the CLEVR-Hans repository.
