@@ -1,0 +1,14 @@
+setuptools
+Cython
+numpy
+pandas
+scipy
+statsmodels
+scikit-learn>=0.20.0
+tensorboard_logger
+tqdm
+torchsummary
+seaborn
+captum
+rtpt
+h5py
