@@ -55,7 +55,7 @@ The folder ```scripts/``` contains bash scripts for training all models and for 
 training the soft binder are in ```scripts/train/CLEVR-4/``` and ```scripts/train/CLEVR-Easy/```. For finetuning the
 hard binder and obtaining the retrieval corpus we refer to ```scripts/train/perform_block_clustering.sh```. 
 
-E.g., for training the soft binder on the CLEVR data via the sysbinder encoder on two gpus call:
+E.g., for training the soft binder on the CLEVR data via the sysbinder encoder on two gpus (1,2) and for seed 0 call:
 
 ```./scripts/train/CLEVR-4/train_sysbind_orig_CLEVR.sh 1,2 0```
 
@@ -63,8 +63,9 @@ E.g., for distilling the concepts from the soft binders encodings into the hard 
 
 ```./scripts/train/perform_block_clustering.sh 1 /workspace/datasets-local/CLEVR-4-1/ logs/sysbinder_seed_0/best_model.pt 4 16```
 
-for CLEVR where we have 4 categories within the data (no actually relevant for this script) and 16 blocks 
-(corresponing to the number of the specified model checkpoint, e.g., best_model.pt).
+on gpu 1, for CLEVR, with the specified path to the checkpoint of the pretrained sysbinder model, with 4 categories 
+within the data (this information is not actually relevant for this script just required by the dataloader) and 
+16 blocks (corresponding to the number of blocks of the specified model checkpoint, e.g., best_model.pt).
 
 The scripts for Q1 evaluations are in ```scripts/eval/```.
 
