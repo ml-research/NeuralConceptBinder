@@ -11,7 +11,11 @@ This repository contains all source code required to reproduce the experiments o
 
 Here we provide information on how to download the novel and evaluated datasets.
 
-We provide our novel CLEVR-Sudoku dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip).
+#### CLEVR-Sudoku
+
+We provide our novel CLEVR-Sudoku dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip). In the following, you can find an example of a CLEVR-Sudoku: 
+
+<img src="./figures/sudoku.png" height=300>
 
 For the CLEVR-Easy dataset we refer to <https://github.com/singhgautam/sysbinder>.
 
