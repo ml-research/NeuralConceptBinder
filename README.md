@@ -1,6 +1,6 @@
 # NeuralConceptBinder
 
-This is the official repository of the "Neural Concept Binder" article.
+This is the official repository of the [Neural Concept Binder](https://arxiv.org/abs/2406.09949) article.
 This repository contains all source code required to reproduce the experiments of the paper. 
 
 ![Overview of Neural Concept Binder](./figures/main.png)
@@ -85,3 +85,14 @@ the CLEVR-Hans dataset in the context of Q4.
 
 ```data_creation_scripts/``` contains the json files used for creating the CLEVR-Easy-1 and CLEVR-1 datasets
 based on the CLEVR-Hans repository.
+
+## Citation
+If you find this code useful in your research, please consider citing:
+
+> @article{stammer2024neural,
+  title={Neural Concept Binder},
+  author={Wolfgang Stammer and Antonia Wüst and David Steinmann and Kristian Kersting},
+  journal={arXiv preprint arXiv:2406.09949},
+  year={2024}
+}
+
