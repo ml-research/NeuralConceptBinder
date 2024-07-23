@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="The Neural Concept Binder derives discrete concept representations from raw input images.">
+  <meta name="keywords"
+    content="Neural Concept Binder, NCB, Concept Discovery, Interpretable Artificial Intelligence, Interactive Machine Learning, Disentanglement">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neural Concept Binder</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/aiml_logo.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/fireworks.js"></script>
+
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://ml-research.github.io">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://ml-research.github.io/pix2code/">
+              Pix2Code
+            </a>
+            <!-- 
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Neural Concept Binder
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://ml-research.github.io/people/wstammer/index.html" target="_blank">Wolfgang
+                  Stammer</a><sup>1,2,*</sup>,</span>
+              <span class="author-block">
+                <a href="https://ml-research.github.io/people/awuest/index.html" target="_blank">Antonia
+                  W&uuml;st</a><sup>1,*</sup>,</span>
+              <span class="author-block">
+                <a href="https://ml-research.github.io/people/dsteinmann/index.html" target="_blank">David
+                  Steinmann</a><sup>1,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://ml-research.github.io/people/kkersting/" target="_blank">Kristian
+                  Kersting</a><sup>1,2,3,4</sup>,
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>AI/ML Group at TU Darmstadt,</span>
+              <span class="author-block"><sup>2</sup>Hessian Center for AI (hessian.AI),</span>
+              <span class="author-block"><sup>3</sup>Centre for Cognitive Science at TU Darmstadt,</span>
+              <span class="author-block"><sup>4</sup>German Research Center for AI (DFKI)</span>
+              <br />
+              <span class="author-block"><sup>*</sup>Equal contribution</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2406.09949" class="external-link button is-normal is-rounded is-dark"
+                    target="_blank">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2406.09949" class="external-link button is-normal is-rounded is-dark"
+                    target="_blank">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <!-- <span class="link-block">
+                  <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span> -->
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/ml-research/NeuralConceptBinder"
+                    class="external-link button is-normal is-rounded is-dark" target="_blank">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip"
+                    class="external-link button is-normal is-rounded is-dark" target="_blank">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>CLEVR Sudoku</span>
+                  </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="content has-text-centered">
+          <img src="./static/images/motivation.jpg" class="motivation-image" alt="Concept Learning Motivation" />
+
+          <h3 class="subtitle has-text-centered">
+            The <span class="method">Neural Concept Binder (NCB) </span> learns expressive yet inspectable
+            and revisable concepts from unlabeled data.
+          </h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                The challenge in object-based visual reasoning lies in generating descriptive yet distinct concept
+                representations. Moreover, doing this in an unsupervised fashion requires human users to understand a
+                model's learned concepts and potentially revise false concepts. In addressing this challenge, we
+                introduce the <span class="method">Neural Concept Binder</span>, a new framework for deriving discrete
+                concept representations
+                resulting in what we term “concept-slot encodings”. These encodings leverage both "soft binding" via
+                object-centric block-slot encodings and "hard binding" via retrieval-based inference. The <span
+                  class="method">Neural Concept
+                  Binder</span> facilitates straightforward concept inspection and direct integration of external
+                knowledge, such
+                as human input or insights from other AI models like GPT-4. Additionally, we demonstrate that
+                incorporating the hard binding mechanism does not compromise performance; instead, it enables seamless
+                integration into both neural and symbolic modules for intricate reasoning tasks, as evidenced by
+                evaluations on our newly introduced CLEVR-Sudoku dataset.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!--/ Abstract. -->
+
+        <!-- Paper video. -->
+        <!-- <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div> -->
+        <!--/ Paper video. -->
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Learn Inspectable and Revisable Concepts</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              Our proposed <span class="method">Neural Concept Binder (NCB)</span> framework tackles the challenge of
+              learning inspectable
+              and revisable object-factor level concepts from unlabeled images by combining two key elements: (i)
+              continuous representations via (block-)slot-attention based image processing with (ii) discrete
+              representations via retrieval-based inference.
+            </p>
+            <div class="hero-body">
+              <img src="./static/images/main.jpg" class="interpretability-image" alt="NCB Method overview" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!-- Interpretability. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Inspection of Learned Concepts</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              One key advantage of <span class="method">NCB's</span> concept representations is their inherent
+              readability and inspectability.
+              The concepts of an object can be inspected and compared to different concepts of the same block. For a
+              more detailed understanding, concepts can even be swapped and new images based on the modified concept
+              representation can be generated.
+            </p>
+            <div class="hero-body">
+
+              <img src="./static/images/inspection.jpg" class="interpretability-image"
+                alt="Concepts of an object can be inspected and compared." />
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <br />
+      <!-- / Interpretability-->
+  </section>
+  <section class="hero is-light is-small">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <!-- CLEVR Sudoku -->
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">CLEVR Sudoku</h2>
+
+            <div class="content has-text-justified">
+              <p>
+                We introduce the <span class="method">CLEVR Sudoku</span> dataset, a new benchmark that represents a
+                challenging visual puzzle requiring both visual object perception and reasoning capabilitie. The dataset
+                consists of 9x9 Sudoku puzzles with
+                varying degrees of difficulty. Each image is annotated with the correct solution to the puzzle, which
+                serves as the ground truth for evaluating the model's performance.
+              </p>
+              <p>CLEVR-Sudoku requires visual perception as well as deductive reasoning skills. We as humans are able to
+                abstract the relevant information from the images to reason about missing cells. Try for yourself!</p>
+
+            </div>
+
+            <!-- Sudoku -->
+            <div class="hero-body">
+              <div class="sudoku-wrapper">
+                <div id="sudoku-container">
+                  <div id="sudoku-grid"></div>
+                  <div id="image-options"></div>
+                </div>
+              </div>
+              <script src="./static/js/fireworks.js"></script>
+              <script src="./static/js/script.js"></script>
+
+              <!-- /Sudoku -->
+            </div>
+            <div class="content has-text-justified">
+              <p>
+                In our evaluations we show the solving <span class="method">CLEVR Sudoku</span> puzzles is harder than
+                one
+                might expect. Only small errors in the concept prediction (even in the case of supervised learning)
+                cause
+                a wrong symbolic representation of the grid and thus a wrong solution. With <span
+                  class="method">NCB</span>
+                we propose a
+                strong baseline for solving the CLEVR Sudoku puzzles without supervision of the ground thruth concepts.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{stammer2024neural,
+        title={Neural Concept Binder},
+        author={Stammer, Wolfgang and W{\"u}st, Antonia and Steinmann, David and Kersting, Kristian},
+        journal={arXiv preprint arXiv:2406.09949},
+        year={2024}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="modal-message"></p>
+      <canvas id="fireworks-canvas"></canvas>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/pdf/2402.08280">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/ml-research/pix2code" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This work was supported by the Priority Program (SPP) 2422 in the subproject "Optimization of active
+              surface
+              design of high-speed progressive tools using machine and deep learning algorithms" funded by the
+              German Research Foundation (DFG), the "ML2MT" project from the Volkswagen Stiftung and the
+              "The Adaptive Mind" project from the Hessian Ministry of Science and Arts (HMWK). It has further
+              benefited from the HMWK projects "The Third Wave of Artificial Intelligence - 3AI", and Hessian.AI,
+              as well as the Hessian research priority program LOEWE within the project WhiteBox, the ICT-48
+              Network of AI Research Excellence Center "TAILOR" (EU Horizon 2020, GA No 952215) and the
+              EU-funded "TANGO" project (EU Horizon 2023, GA No 57100431).
+            </p>
+            <p>The website template is based on the source code of <a
+                href="https://github.com/nerfies/nerfies.github.io">this
+                website</a>. </p>
+            <p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
