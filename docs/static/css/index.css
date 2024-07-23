@@ -171,15 +171,13 @@ body {
 
 #sudoku-grid {
   display: grid;
-  grid-template-columns: repeat(9, 50px);
+  grid-template-columns: repeat(9, 1fr);
   grid-gap: 2px;
   background-color: #000;
-  border: 3px solid #000;
+  border: 3px solid #000000;
 }
 
 .sudoku-cell {
-  width: 50px;
-  height: 50px;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
@@ -189,14 +187,11 @@ body {
 
 #image-options {
   display: grid;
-  /* grid-template-columns: repeat(3, 1fr); */
   grid-gap: 2px;
   margin-left: 20px;
 }
 
 .image-option {
-  width: 50px;
-  height: 50px;
   cursor: pointer;
 }
 
