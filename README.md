@@ -27,8 +27,9 @@ and [CLEVR-1](https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV
 
 These represent versions of the original datasets that contain single objects.
 
-Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how to download 
-the CLEVR-Hans dataset.
+We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiJ7Jm5YwLaPjj2Cjj2AxGrH/CLEVR-4-1-cls.zip)
+(Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how generate your own dataset and to download 
+the original CLEVR-Hans dataset).
 
 ### Model Checkpoints
 
