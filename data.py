@@ -9,7 +9,7 @@ import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
-from torchvision import transforms
+from torchvision import transforms as T
 
 
 class CLEVREasyWithAnnotations(Dataset):
@@ -45,7 +45,7 @@ class CLEVREasyWithAnnotations(Dataset):
 
         self.total_imgs = self.total_imgs[:int(len(self.total_imgs) * self.perc_imgs)]
 
-        self.transform = transforms.ToTensor()
+        self.transform = T.ToTensor()
 
         # codes
         self.color_codes = {
@@ -273,7 +273,7 @@ class CLEVR4_1_WithAnnotations(Dataset):
 
         self.total_imgs = self.total_imgs[:int(len(self.total_imgs) * self.perc_imgs)]
 
-        self.transform = transforms.ToTensor()
+        self.transform = T.ToTensor()
 
         # codes
         self.color_codes = {
@@ -409,7 +409,7 @@ class CLEVR4_1_WithAnnotations_LeftRight(Dataset):
 
         self.total_imgs = self.total_imgs[:int(len(self.total_imgs) * self.perc_imgs)]
 
-        self.transform = transforms.ToTensor()
+        self.transform = T.ToTensor()
 
         # codes
         self.color_codes = {
@@ -523,3 +523,88 @@ class CLEVR4_1_WithAnnotations_LeftRight(Dataset):
         # Right
         elif obj_pixel_coords[0] >= int(img_size[0] / 2):
             return 1
+
+
+class Tetris_1(Dataset):
+    def __init__(self, data_dir, transform=None, target_transform=None, img_size=128, num_categories=5, perc_imgs=1.):
+        """
+        Args:
+            data_dir (str): Path to the directory containing the image, mask, and attribute files.
+            transform (callable, optional): A function/transform that takes in an image and returns a transformed version.
+            target_transform (callable, optional): A function/transform that takes in the target (mask) and returns a transformed version.
+        """
+        self.data_dir = data_dir
+        self.transform = transform
+        self.target_transform = target_transform
+        self.img_size = img_size
+        self.num_categories = num_categories
+        self.perc_imgs = perc_imgs
+        self.image_files = [f for f in os.listdir(data_dir) if f.endswith('.png') and '_mask' not in f]
+
+        self.shape_codes = {
+            "I": 0, "O": 1, "L": 2, "T": 3, "Z": 4, "S": 5, "J": 6
+        }
+
+        self.colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255),
+                       (255, 255, 0), (255, 165, 0), (0, 255, 255), (128, 0, 128)]
+
+
+    def __len__(self):
+        return len(self.image_files)
+
+    def __getitem__(self, idx):
+        # Load image
+        img_name = self.image_files[idx]
+        img_path = os.path.join(self.data_dir, img_name)
+        image = Image.open(img_path).convert("RGB")
+        image = image.resize((self.img_size, self.img_size))
+
+        # Load mask
+        mask_name = img_name.replace('imgs/', 'masks/').replace('image_', 'image_mask_')
+        mask_path = os.path.join(self.data_dir, mask_name)
+        mask = Image.open(mask_path).convert("L")  # Grayscale mask
+        mask = mask.resize((self.img_size, self.img_size))
+
+        # Load attributes
+        npz_name = img_name.replace('imgs/', 'attributes/').replace('.png', '.npz')
+        npz_path = os.path.join(self.data_dir, npz_name)
+        attributes = np.load(npz_path, allow_pickle=True)['tetris_data']
+
+        # Apply transforms (if any) to image
+        if self.transform:
+            image = self.transform(image)
+
+        # Apply transforms (if any) to mask
+        if self.target_transform:
+            mask = self.target_transform(mask)
+        else:
+            mask = T.ToTensor()(mask)  # Default conversion to tensor if no transform
+
+        # Process attributes into a tensor form (optional: you can modify this based on your needs)
+        attributes_tensor = self.process_attributes(attributes)
+
+        return image, mask, attributes_tensor
+
+    def process_attributes(self, attributes):
+        """
+        Process the attributes from the .npz file to a format suitable for a tensor.
+        This can be modified based on your needs (e.g., encoding specific values).
+        """
+        assert self.num_categories == 2 # for now we are only processing discrete values
+        # annotations
+        annotations = torch.zeros(1, self.num_categories)  # N, G
+
+        # class_labels = []
+        assert len(attributes) == 1
+
+        # shape
+        annotations[0, 0] = self.shape_codes[attributes[0]["shape"]]
+
+        # color
+        annotations[0, 1] = self.get_color_id(attributes[0]["color"])
+
+        return annotations
+
+    def get_color_id(self, color):
+        color_id = [i for i in range(len(self.colors)) if color == self.colors[i]][0]
+        return color_id

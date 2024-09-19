@@ -20,7 +20,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from sklearn.metrics import pairwise_distances
 
-from data import CLEVREasyWithAnnotations, CLEVREasy_1_WithAnnotations, CLEVR4_1_WithAnnotations
+from data import CLEVREasyWithAnnotations, CLEVREasy_1_WithAnnotations, CLEVR4_1_WithAnnotations, Tetris_1
 from sysbinder.sysbinder import SysBinderImageAutoEncoder
 import utils_ncb as utils_bnr
 
@@ -512,9 +512,12 @@ def gather_obj_encs(model, loader, args):
 	all_imgs = []
 	all_img_locs = []
 	for i, sample in tqdm(enumerate(loader)):
-		img_locs = sample[-1]
-		sample = sample[:-1]
-		imgs, _, _, _ = map(lambda x: x.to(args.device), sample)
+		try:
+			img_locs = sample[-1]
+			sample = sample[:-1]
+			imgs, _, _, _ = map(lambda x: x.to(args.device), sample)
+		except:
+			imgs, _, _ = map(lambda x: x.to(args.device), sample)
 
 		# encode image
 		slot_encs, _, attns, _ = model.encode(imgs)
@@ -551,6 +554,11 @@ def main():
 		train_dataset = CLEVR4_1_WithAnnotations(
 			root=args.data_path, phase="train", img_size=args.image_size, max_num_objs=args.num_slots,
 			num_categories=args.num_categories,
+		)
+	elif 'tetrominoes' in args.data_path:
+		train_dataset = TetrisDataset(
+			data_dir=args.data_path, transform=None, target_transform=None,
+			img_size=args.image_size, num_categories=self.num_categories
 		)
 
 	def seed_worker(worker_id):
