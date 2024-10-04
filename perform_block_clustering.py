@@ -79,7 +79,7 @@ parser.add_argument('--thresh_count_obj_slots', type=int, default=-1,
                          '0 indicates we just take that slot with the maximum slot attention value,'
                          '1 indicates we take the maximum count of high attn weights (based on thresh_attn_ob_slots), '
                          'otherwise those slots that contain a number of values above thresh_attn_obj_slots are chosen' 
-                         '(see retrievalbinder for usage)')
+                         '(see neural_concept_binder.py for usage)')
 
 parser.add_argument('--num_clusters', type=int, default=8)
 parser.add_argument('--num_categories', type=int, default=3,
