@@ -150,3 +150,11 @@ CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto-exem-basis \
 --retrieval_corpus_path logs/clevr4_600_epochs/clevr4_sysbind_orig_seed${SEED}/block_concept_dicts.pkl
+
+printf "\n#-------------------------------------------------------------------------------#\n"
+printf "nlotm\n"
+CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
+--image_size 128 --image_channels 3 --clip 0.05 --num_iterations 3 --num_slots 4 --num_blocks 16 \
+--num_categories $NCATS --perc_imgs $PIMGS \
+--data_path $DATA --batch_size 20 --model_type nlotm --clf_type dt \
+--checkpoint_path logs/nlotm/clevr4/checkpoint_seed_${SEED}.pt.tar --seed 0 
