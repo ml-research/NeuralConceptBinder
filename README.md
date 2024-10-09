@@ -60,6 +60,7 @@ We provide a simple demo script on how to obtain concept-slot encodings from a t
 and corresponding bash file ```scripts/inference_example/inference_example.sh```.
 
 An example call based on a model trained on CLEVR4 would be: 
+
 ```./scripts/inference_example/inference_example.sh 0 0 pathto/CLEVR-4-1/ logs/CLEVR-4/ncb_seed_0/best_model.pt logs/CLEVR-4/ncb_seed_0/block_concept_dicts.pkl```
 
 Hereby the first 0 corresponds to the GPU ID, the second 0 to the random seed, followed by the path to the dataset,
