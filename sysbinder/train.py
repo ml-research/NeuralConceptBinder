@@ -182,7 +182,7 @@ def main(args):
             pass
 
     # Create and start RTPT object
-    rtpt = RTPT(name_initials='WS', experiment_name=f"SysBinderRetriever",
+    rtpt = RTPT(name_initials='YOURINITIALS', experiment_name=f"SysBinderRetriever",
                 max_iterations=args.epochs-start_epoch)
     rtpt.start()
 

@@ -310,7 +310,7 @@ def main():
     torch.backends.cudnn.benchmark = True
 
     # Create RTPT object
-    rtpt = RTPT(name_initials='WS', experiment_name=f"Clevr Hans Slot Att Set Transf xil",
+    rtpt = RTPT(name_initials='YOURINITIALS', experiment_name=f"Clevr Hans Slot Att Set Transf xil",
                 max_iterations=args.epochs)
     # Start the RTPT tracking
     rtpt.start()

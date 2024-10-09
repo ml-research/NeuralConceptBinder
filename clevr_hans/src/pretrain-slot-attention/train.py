@@ -179,7 +179,7 @@ def main():
     criterion = torch.nn.SmoothL1Loss()
 
     # Create RTPT object
-    rtpt = RTPT(name_initials='WS', experiment_name=f"Clevr Hans Slot Att Set Transf xil",
+    rtpt = RTPT(name_initials='YOURINITIALS', experiment_name=f"Clevr Hans Slot Att Set Transf xil",
                 max_iterations=args.epochs)
     # Start the RTPT tracking
     rtpt.start()

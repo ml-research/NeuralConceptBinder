@@ -117,7 +117,7 @@ def get_data(args):
         print(f'N test unconf: {len(test_unconf_loader.dataset)}')
 
     else:
-        print(f'Using precomputed retbind ouput as input from {args.save_dir_encs}')
+        print(f'Using precomputed ncb ouput as input from {args.save_dir_encs}')
 
         X_train = np.load(f'{args.save_dir_encs}train_encs_one_hot_{args.model_seed}.npy')
         y_train = np.load(f'{args.save_dir_encs}train_labels_{args.model_seed}.npy')

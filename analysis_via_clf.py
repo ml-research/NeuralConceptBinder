@@ -19,7 +19,7 @@ from neural_concept_binder import NeuralConceptBinder
 
 # Baseline, Repository needs to be cloned from https://github.com/yfw/nlotm
 from nlotm.nlotm import NlotmImageAutoEncoder
-import utils_ncb as utils_bnr
+import utils_ncb as utils_ncb
 
 torch.set_num_threads(40)
 OMP_NUM_THREADS = 40
@@ -29,11 +29,11 @@ SEED = 0
 
 
 def get_args():
-    args = utils_bnr.get_parser(
+    args = utils_ncb.get_parser(
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ).parse_args()
 
-    utils_bnr.set_seed(SEED)
+    utils_ncb.set_seed(SEED)
 
     if args.model_type == "nlotm":
         args.fp16 = False
@@ -92,7 +92,7 @@ def gather_encs(model, loader, args):
                     codes = codes.reshape(
                         (codes.shape[0], codes.shape[1], -1)
                     )  # [B, N_ObjSlots, N_Blocks*N_BlockPrototypes]
-            elif args.model_type == "retbind":
+            elif args.model_type == "ncb":
                 codes = encs[0]
                 # probs = encs[1]
 
@@ -149,7 +149,7 @@ def clf_per_cat(train_encs, train_labels, test_encs, test_labels, model, args):
 def get_min_categories_per_block(model, args):
     min_categories = []
     for block_id in range(args.num_blocks):
-        if args.model_type == "retbind":
+        if args.model_type == "ncb":
             min_categories.append(
                 len(
                     np.unique(
@@ -225,7 +225,7 @@ def main():
         f"{args.checkpoint_path} loading for {args.model_type} encoding classification"
     )
 
-    if args.model_type == "retbind":
+    if args.model_type == "ncb":
         model = NeuralConceptBinder(args)
     elif "sysbind" in args.model_type:
         if "step" in args.model_type or "hard" in args.model_type:
@@ -264,7 +264,7 @@ def main():
 
     # Create and start RTPT object
     rtpt = RTPT(
-        name_initials="WS", experiment_name=f"SysBinderRetriever", max_iterations=1
+        name_initials="YOURINITIALS", experiment_name=f"NCB", max_iterations=1
     )
     rtpt.start()
 

@@ -73,45 +73,45 @@ CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
 
 printf "\n#-------------------------------------------------------------------------------#\n"
 printf "#-------------------------------------------------------------------------------#\n"
-printf "retbind just prototypes\n"
+printf "ncb just prototypes\n"
 CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
---data_path $DATA --batch_size 20 --model_type retbind --clf_type dt \
+--data_path $DATA --batch_size 20 --model_type ncb --clf_type dt \
 --checkpoint_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/best_model.pt --seed 0 \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto \
 --retrieval_corpus_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/block_concept_dicts.pkl
 
 printf "\n#-------------------------------------------------------------------------------#\n"
-printf "retbind just prototypes & exemplars\n"
+printf "ncb just prototypes & exemplars\n"
 CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
---data_path $DATA --batch_size 20 --model_type retbind --clf_type dt \
+--data_path $DATA --batch_size 20 --model_type ncb --clf_type dt \
 --checkpoint_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/best_model.pt --seed 0 \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto-exem --topk 5 --majority_vote \
 --retrieval_corpus_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/block_concept_dicts.pkl
 
 printf "\n#-------------------------------------------------------------------------------#\n"
-printf "retbind prototypes & exemplars argmax selection\n"
+printf "ncb prototypes & exemplars argmax selection\n"
 CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
---data_path $DATA --batch_size 20 --model_type retbind --clf_type dt \
+--data_path $DATA --batch_size 20 --model_type ncb --clf_type dt \
 --checkpoint_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/best_model.pt --seed 0 \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto-exem \
 --retrieval_corpus_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/block_concept_dicts.pkl
 
 printf "\n#-------------------------------------------------------------------------------#\n"
-printf "retbind prototypes & exemplars & basis vectors\n"
+printf "ncb prototypes & exemplars & basis vectors\n"
 CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
---data_path $DATA --batch_size 20 --model_type retbind --clf_type dt \
+--data_path $DATA --batch_size 20 --model_type ncb --clf_type dt \
 --checkpoint_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/best_model.pt --seed 0 \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto-exem-basis --topk 5 --majority_vote \
 --retrieval_corpus_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/block_concept_dicts.pkl
 
 printf "\n#-------------------------------------------------------------------------------#\n"
-printf "retbind prototypes & exemplars & basis vectors argmax selection\n"
+printf "ncb prototypes & exemplars & basis vectors argmax selection\n"
 CUDA_VISIBLE_DEVICES=$DEVICE python analysis_via_clf.py \
---data_path $DATA --batch_size 20 --model_type retbind --clf_type dt \
+--data_path $DATA --batch_size 20 --model_type ncb --clf_type dt \
 --checkpoint_path logs/clevr_easy_500_epochs/sysbind_orig_seed${SEED}/best_model.pt --seed 0 \
 --thresh_count_obj_slot 0 --num_categories $NCATS --perc_imgs $PIMGS \
 --retrieval_encs proto-exem-basis \

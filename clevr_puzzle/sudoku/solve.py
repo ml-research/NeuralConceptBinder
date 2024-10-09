@@ -76,7 +76,7 @@ def load_model(
     model_path,
     retrieval_corpus_path,
     num_blocks=8,
-    model_type="retbind",
+    model_type="ncb",
     delete_dict_path=None,
     merge_dict_paths=None,
 ):
@@ -91,7 +91,7 @@ def load_model(
 
     args.num_blocks = num_blocks
 
-    if model_type == "retbind":
+    if model_type == "ncb":
         model = NeuralConceptBinder(args)  # automatically loads the model internally
     elif model_type == "sysbind" or model_type == "sysbind-soft":
         model = SysBinderImageAutoEncoder(args)
@@ -413,7 +413,7 @@ def get_code_for_image(model, path, model_type, sudoku_type):
                 (codes.shape[0], codes.shape[1], -1)
             )  # [B, N_ObjSlots, N_Blocks*N_BlockPrototypes]
             codes = codes.squeeze(1)
-    elif model_type == "retbind":
+    elif model_type == "ncb":
         with torch.no_grad():
             codes, _ = model.encode(img)
             codes = codes[0]
@@ -808,7 +808,7 @@ if __name__ == "__main__":
             "sysbind",
             "sysbind-soft",
             "slot-attention-clevr",
-            "retbind",
+            "ncb",
             "ground-truth",
         ],
     )
@@ -820,13 +820,13 @@ if __name__ == "__main__":
             "ground-truth",
             "sysbind",
             "sysbind-soft",
-            "retbind",
+            "ncb",
             "slot-attention-clevr",
         ]:
             for sudoku_type in ["CLEVR-Easy", "CLEVR-4"]:
                 for revised in [False, True]:
                     if revised:
-                        if not model == "retbind":
+                        if not model == "ncb":
                             continue
                         for mode in ["dt", "vlm"]:
                             print(

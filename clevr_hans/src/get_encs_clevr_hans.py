@@ -39,7 +39,7 @@ def gather_encs(loader, model, args):
 	class_ids = []
 	fnames_all = []
 	# Create RTPT object
-	rtpt = RTPT(name_initials='WS', experiment_name=f"Gather Encs",
+	rtpt = RTPT(name_initials='YOURINITIALS', experiment_name=f"Gather Encs",
 	            max_iterations=len(loader))
 	# Start the RTPT tracking
 	rtpt.start()
@@ -128,33 +128,33 @@ def main():
 	)
 
 	print('Load model ...')
-	retbind_model = NeuralConceptBinder(args)
+	ncb_model = NeuralConceptBinder(args)
 
-	retbind_model.to(args.device)
-	retbind_model.eval()
+	ncb_model.to(args.device)
+	ncb_model.eval()
 
 	if args.feedback_path:
-		retbind_model.category_ids = list(np.cumsum(retbind_model.prior_num_concepts))
-		retbind_model.category_ids.insert(0, 0)
-		utils.set_neg_feedback(retbind_model, args)
+		ncb_model.category_ids = list(np.cumsum(ncb_model.prior_num_concepts))
+		ncb_model.category_ids.insert(0, 0)
+		utils.set_neg_feedback(ncb_model, args)
 
 	# create dir to save
 	if not os.path.exists(args.save_dir_encs):
 		os.makedirs(args.save_dir_encs)
 
-	train_encs_one_hot, train_encs, train_labels, train_fnames = gather_encs(train_loader, retbind_model, args)
+	train_encs_one_hot, train_encs, train_labels, train_fnames = gather_encs(train_loader, ncb_model, args)
 	np.save(f'{args.save_dir_encs}train_encs_one_hot_{args.model_seed}.npy', train_encs_one_hot.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}train_encs_{args.model_seed}.npy', train_encs.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}train_labels_{args.model_seed}.npy', train_labels.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}train_fnames_{args.model_seed}.npy', train_fnames)
 
-	val_encs_one_hot, val_encs, val_labels, val_fnames = gather_encs(val_loader, retbind_model, args)
+	val_encs_one_hot, val_encs, val_labels, val_fnames = gather_encs(val_loader, ncb_model, args)
 	np.save(f'{args.save_dir_encs}val_encs_one_hot_{args.model_seed}.npy', val_encs_one_hot.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}val_encs_{args.model_seed}.npy', val_encs.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}val_labels_{args.model_seed}.npy', val_labels.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}val_fnames_{args.model_seed}.npy', val_fnames)
 
-	test_encs_one_hot, test_encs, test_labels, test_fnames = gather_encs(test_loader, retbind_model, args)
+	test_encs_one_hot, test_encs, test_labels, test_fnames = gather_encs(test_loader, ncb_model, args)
 	np.save(f'{args.save_dir_encs}test_encs_one_hot_{args.model_seed}.npy', test_encs_one_hot.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}test_encs_{args.model_seed}.npy', test_encs.detach().cpu().numpy())
 	np.save(f'{args.save_dir_encs}test_labels_{args.model_seed}.npy', test_labels.detach().cpu().numpy())

@@ -28,7 +28,7 @@ and [CLEVR-1](https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV
 These represent versions of the original datasets that contain single objects.
 
 We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiJ7Jm5YwLaPjj2Cjj2AxGrH/CLEVR-4-1-cls.zip)
-(Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how generate your own dataset and to download 
+(Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how to generate your own dataset and to download 
 the original CLEVR-Hans dataset).
 
 ### Model Checkpoints
@@ -54,7 +54,22 @@ cd to “pathto/NeuralConceptBinder/“
 run “pip install -e sysbinder”
 ```
 
-### Evaluations
+### Quick Inference Demo (how to obtain concept-slot encs from trained model)
+
+We provide a simple demo script on how to obtain concept-slot encodings from a trained NCB in ```inference_example.py```
+and corresponding bash file ```scripts/inference_example/inference_example.sh```.
+
+An example call based on a model trained on CLEVR4 would be: 
+```./scripts/inference_example/inference_example.sh 0 0 pathto/CLEVR-4-1/ logs/CLEVR-4/ncb_seed_0/best_model.pt logs/CLEVR-4/ncb_seed_0/block_concept_dicts.pkl```
+
+Hereby the first 0 corresponds to the GPU ID, the second 0 to the random seed, followed by the path to the dataset,
+the path to the model ckpt file and finally the path to the corresponding concept dictionary of the model ckpt. 
+
+Note that by default in ```inference_example.sh``` the argument ```--thresh_count_obj_slot``` is set to -1. This means 
+that NCB will return concept encodings of every slot. If you wish to return only that slot with the maximum attention
+value (heutistic used in our paper) please update the bash script to ```--thresh_count_obj_slot 0```.
+
+### Experimental Evaluations
 
 The folder ```scripts/``` contains bash scripts for training all models and for evaluations for Q1. Files for
 training the soft binder are in ```scripts/train/CLEVR-4/``` and ```scripts/train/CLEVR-Easy/```. For finetuning the
@@ -93,7 +108,7 @@ If you find this code useful in your research, please consider citing:
 > @article{stammer2024neural,
   title={Neural Concept Binder},
   author={Wolfgang Stammer and Antonia Wüst and David Steinmann and Kristian Kersting},
-  journal={arXiv preprint arXiv:2406.09949},
+  journal={Advances in Neural Information Processing (NeurIPS)},
   year={2024}
 }
 

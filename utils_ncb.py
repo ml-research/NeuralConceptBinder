@@ -178,9 +178,9 @@ def get_parser(device):
     )
     parser.add_argument(
         "--model_type",
-        choices=["retbind", "sysbind", "sysbind_hard", "sysbind_step"],
-        help="Specify whether model type. Either original sysbinder (sysbind) or bind&retrieve (bnr).",
-        default="retbind",
+        choices=["ncb", "sysbind", "sysbind_hard", "sysbind_step"],
+        help="Specify whether model type. Either original sysbinder (sysbind) or neural concept binder (ncb).",
+        default="ncb",
     )
     parser.add_argument("--use_dp", default=False, action="store_true")
     parser.add_argument(
@@ -194,11 +194,8 @@ def get_parser(device):
         "--num_categories",
         type=int,
         default=3,
-        help="how many categories of attributes",
+        help="How many categories of attributes for classification?",
     )
-    # parser.add_argument('--clf_label_type', default='individual', choices=['combined', 'individual'],
-    #                     help='Specify whether the classification labels should consist of the combined attributes or '
-    #                          'each attribute individually.')
     parser.add_argument(
         "--clf_type",
         default=None,
@@ -274,19 +271,20 @@ def get_parser(device):
         "--retrieval_encs",
         default="proto-exem",
         choices=["proto", "exem", "proto-exem"],
+        help="Which type of encodings from the retrieval corpus should we use? Prototypes, exemplars or both jointly?"
     )
     parser.add_argument(
         "--majority_vote",
         default=False,
         action="store_true",
-        help="If set then the retrieval binder takes the majority vote of the topk nearest encodings to "
+        help="If set then the hard binder takes the majority vote of the topk nearest encodings to "
         "select the final cluster id label",
     )
     parser.add_argument(
         "--topk",
         type=int,
         default=5,
-        help="if majority_vote is set to True, then retrieval binder selects the topk nearest encodings at "
+        help="If majority_vote is set to True, then hard binder selects the topk nearest encodings at "
         "inference to identify the most likely cluster assignment",
     )
     parser.add_argument(
@@ -294,7 +292,7 @@ def get_parser(device):
         type=float,
         default=0.98,
         help="threshold value for determining the object slots from set of slots, "
-        "based on attention weight values (between 0. and 1.)(see retrievalbinder for usage)."
+        "based on attention weight values (between 0. and 1.)(see neural_concept_binder for usage)."
         "This should be reestimated for every dataset individually if thresh_count_obj_slots is "
         "not set to 0.",
     )

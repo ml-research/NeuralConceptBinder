@@ -22,7 +22,7 @@ from sklearn.metrics import pairwise_distances
 
 from data import CLEVREasyWithAnnotations, CLEVREasy_1_WithAnnotations, CLEVR4_1_WithAnnotations
 from sysbinder.sysbinder import SysBinderImageAutoEncoder
-import utils_ncb as utils_bnr
+import utils_ncb as utils_ncb
 
 torch.set_num_threads(20)
 OMP_NUM_THREADS = 20
@@ -118,7 +118,7 @@ def get_args():
 	args = parser.parse_args()
 
 	args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	utils_bnr.set_seed(args.seed)
+	utils_ncb.set_seed(args.seed)
 	return args
 
 
@@ -594,7 +594,7 @@ def main():
 	model.to(args.device)
 
 	# Create and start RTPT object
-	rtpt = RTPT(name_initials='WS', experiment_name=f"SysBinderRetriever",
+	rtpt = RTPT(name_initials='YOURINITIALS', experiment_name=f"SysBinderRetriever",
 				max_iterations=1)
 	rtpt.start()
 
