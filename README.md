@@ -5,13 +5,11 @@ This repository contains all source code required to reproduce the experiments o
 
 ![Overview of Neural Concept Binder](./figures/main.png)
 
-## How to Run:
-
-### Datasets
+## Datasets
 
 Here we provide information on how to download the novel and evaluated datasets.
 
-#### CLEVR-Sudoku
+### CLEVR-Sudoku
 
 We provide our novel CLEVR-Sudoku dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip). In the following, you can find an example of a CLEVR-Sudoku: 
 
@@ -31,12 +29,12 @@ We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-dar
 (Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how to generate your own dataset and to download 
 the original CLEVR-Hans dataset).
 
-### Model Checkpoints
+## Model Checkpoints
 
 We provide checkpoints of all trained models of our experiments as well as parameter files for [CLEVR-Easy](https://hessenbox.tu-darmstadt.de/getlink/fiNmsxY8anr52RGTwsQtzSxW/CLEVR-Easy.zip)
 and [CLEVR](https://hessenbox.tu-darmstadt.de/getlink/fi6WzuWtQ87Px5P3ewEVNQyZ/CLEVR-4.zip). 
 
-### Docker
+## Docker
 
 We have attached a Dockerfile to make reproduction easier. We further recommend to build your own docker-compose file
 based on the DockerFile. To run without a docker-compose file:
@@ -54,7 +52,7 @@ cd to “pathto/NeuralConceptBinder/“
 run “pip install -e sysbinder”
 ```
 
-### Quick Inference Demo (how to obtain concept-slot encs from trained model)
+## Quick Inference Demo (how to obtain concept-slot encs from trained model)
 
 We provide a simple demo script on how to obtain concept-slot encodings from a trained NCB in ```inference_example.py```
 and corresponding bash file ```scripts/inference_example/inference_example.sh```.
@@ -71,7 +69,7 @@ that NCB will return concept encodings of every slot. If you wish to return only
 value (heutistic used in our paper) please update the bash script to ```--thresh_count_obj_slot 0```. 
 We suggest whether this heuristic still holds in case you use a different dataset than CLEVR and CLEVR-Easy 
 
-### Experimental Evaluations
+## Experimental Evaluations
 
 The folder ```scripts/``` contains bash scripts for training all models and for evaluations for Q1. Files for
 training the soft binder are in ```scripts/train/CLEVR-4/``` and ```scripts/train/CLEVR-Easy/```. For finetuning the
