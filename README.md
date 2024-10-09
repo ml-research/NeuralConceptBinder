@@ -59,16 +59,17 @@ run “pip install -e sysbinder”
 We provide a simple demo script on how to obtain concept-slot encodings from a trained NCB in ```inference_example.py```
 and corresponding bash file ```scripts/inference_example/inference_example.sh```.
 
-An example call based on a model trained on CLEVR4 would be: 
+An example call based on a model trained on CLEVR would be: 
 
-```./scripts/inference_example/inference_example.sh 0 0 pathto/CLEVR-4-1/ logs/CLEVR-4/ncb_seed_0/best_model.pt logs/CLEVR-4/ncb_seed_0/block_concept_dicts.pkl```
+```./scripts/inference_example/inference_example.sh 0 0 pathto/CLEVR-1/ logs/CLEVR/ncb_seed_0/best_model.pt logs/CLEVR/ncb_seed_0/block_concept_dicts.pkl```
 
 Hereby the first 0 corresponds to the GPU ID, the second 0 to the random seed, followed by the path to the dataset,
 the path to the model ckpt file and finally the path to the corresponding concept dictionary of the model ckpt. 
 
 Note that by default in ```inference_example.sh``` the argument ```--thresh_count_obj_slot``` is set to -1. This means 
 that NCB will return concept encodings of every slot. If you wish to return only that slot with the maximum attention
-value (heutistic used in our paper) please update the bash script to ```--thresh_count_obj_slot 0```.
+value (heutistic used in our paper) please update the bash script to ```--thresh_count_obj_slot 0```. 
+We suggest whether this heuristic still holds in case you use a different dataset than CLEVR and CLEVR-Easy 
 
 ### Experimental Evaluations
 
