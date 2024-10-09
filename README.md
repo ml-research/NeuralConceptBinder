@@ -33,6 +33,7 @@ the original CLEVR-Hans dataset).
 
 We provide checkpoints of all trained models of our experiments as well as parameter files for [CLEVR-Easy](https://hessenbox.tu-darmstadt.de/getlink/fiNmsxY8anr52RGTwsQtzSxW/CLEVR-Easy.zip)
 and [CLEVR](https://hessenbox.tu-darmstadt.de/getlink/fi6WzuWtQ87Px5P3ewEVNQyZ/CLEVR-4.zip). 
+You can find the ckpts of the NLOTM baseline [here](https://hessenbox.tu-darmstadt.de/getlink/fiLgJBMQgKpaDKD82WDTGwVv/nlotm.zip).
 
 ## Docker
 
