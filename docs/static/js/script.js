@@ -244,8 +244,6 @@ for (let i = 1; i <= 9; i++) {
 
 let draggedImage = null;
 
-let fireworksDisplay;
-
 function dragStart(e) {
     draggedImage = e.target;
 }
@@ -270,16 +268,19 @@ function checkSolution() {
         for (let j = 0; j < 9; j++) {
             const cell = sudokuGrid.children[i * 9 + j];
             const img = cell.querySelector('img');
-            if (!img || parseInt(img.src.slice(-5, -4)) !== puzzle_solution[i][j]) {
-                if (img) {
-                    wrong = true;
-                    break;
-                }
-                solved = false;
-            }
 
+            // if img is null, set solved to false
+            if (!img) {
+                solved = false;
+                continue;
+            }
+            // if img is false, set wrong to true
+            if (parseInt(img.src.slice(-5, -4)) !== puzzle_solution[i][j]) {
+                wrong = true;
+                solved = false;
+                break;
+            }
         }
-        if (!solved) break;
     }
 
     if (solved) {
