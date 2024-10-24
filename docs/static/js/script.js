@@ -244,6 +244,8 @@ for (let i = 1; i <= 9; i++) {
 
 let draggedImage = null;
 
+let fireworksDisplay;
+
 function dragStart(e) {
     draggedImage = e.target;
 }
@@ -271,9 +273,9 @@ function checkSolution() {
             if (!img || parseInt(img.src.slice(-5, -4)) !== puzzle_solution[i][j]) {
                 if (img) {
                     wrong = true;
+                    break;
                 }
                 solved = false;
-                break;
             }
 
         }
@@ -288,8 +290,6 @@ function checkSolution() {
     }
 }
 
-
-let fireworksDisplay;
 
 function showModal(message) {
     const modal = document.getElementById('modal');
