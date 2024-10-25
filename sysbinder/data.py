@@ -1,10 +1,17 @@
 import glob
+import time as time
+import h5py
+import numpy as np
+import torch
 
 from torchvision import transforms
 from torch.utils.data import Dataset
+from torch.utils.data import TensorDataset, Dataset, Subset
+from torch.utils.data.dataset import ConcatDataset
+from collections import Counter
 
 from PIL import Image
-
+from skimage.transform import resize
 
 class GlobDataset(Dataset):
     def __init__(self, root, phase, img_size):
@@ -34,7 +41,7 @@ class GlobDataset(Dataset):
         return tensor_image
 
 
-def get_isic_2019(datapath, number_nc=None, number_c=None, most_k_informative_img=None,
+def get_isic_2019(datapath, img_size=None, number_nc=None, number_c=None, normalise=True, most_k_informative_img=None,
               informative_indices_filename='output_wr_metric/informative_score_indices_train_set_most_to_least.npy'):
     """
     Load ISIC Skin Cancer 2019 dataset. 
@@ -84,6 +91,33 @@ def get_isic_2019(datapath, number_nc=None, number_c=None, most_k_informative_im
     elap = int(end - start)
     print(f"  --> Read in finished: Took {elap} sec!")
 
+    if img_size is not None:
+        not_cancer_imgs_resize = np.zeros((not_cancer_imgs.shape[0], not_cancer_imgs.shape[1], img_size, img_size))
+        for n, i in enumerate(not_cancer_imgs):
+            not_cancer_imgs_resize[n, :, :, :] = resize(not_cancer_imgs[n, :, :, :],
+                                                        not_cancer_imgs_resize.shape[1:], anti_aliasing=True)
+        not_cancer_masks_resize = np.zeros((not_cancer_masks.shape[0], not_cancer_masks.shape[1], img_size, img_size))
+        for n, i in enumerate(not_cancer_masks):
+            not_cancer_masks_resize[n, :, :, :] = resize(not_cancer_masks[n, :, :, :],
+                                                        not_cancer_masks_resize.shape[1:], anti_aliasing=True)
+        cancer_imgs_resize = np.zeros((cancer_imgs.shape[0], cancer_imgs.shape[1], img_size, img_size))
+        for n, i in enumerate(cancer_imgs):
+            cancer_imgs_resize[n, :, :, :] = resize(cancer_imgs[n, :, :, :],
+                                                    cancer_imgs_resize.shape[1:], anti_aliasing=True)
+        not_cancer_imgs = not_cancer_imgs_resize
+        not_cancer_masks = not_cancer_masks_resize
+        cancer_imgs = cancer_imgs_resize
+
+        print("Resize data finished!")
+
+    if normalise:
+        print('Normalising data ...')
+        X = np.concatenate((not_cancer_imgs, cancer_imgs))
+        X_min = X.min(axis=(0, 2, 3), keepdims=True)
+        X_max = X.max(axis=(0, 2, 3), keepdims=True)
+        not_cancer_imgs = (not_cancer_imgs - X_min) / (X_max - X_min)
+        cancer_imgs = (cancer_imgs - X_min) / (X_max - X_min)
+
     # generate labels: cancer=1; no_cancer=0
     cancer_targets = np.ones((cancer_imgs.shape[0])).astype(np.int64)
     not_cancer_targets = np.zeros((not_cancer_imgs.shape[0])).astype(np.int64)
@@ -99,13 +133,15 @@ def get_isic_2019(datapath, number_nc=None, number_c=None, most_k_informative_im
     cancer_dataset = TensorDataset(torch.from_numpy(cancer_imgs).float(),
                                    torch.from_numpy(cancer_targets),
                                    torch.from_numpy(
-                                       np.zeros((len(cancer_imgs), 1, 299, 299))).float(),
+                                       np.zeros((len(cancer_imgs), 1,
+                                                 cancer_imgs.shape[2], cancer_imgs.shape[3]))).float(),
                                    torch.from_numpy(cancer_flags))
 
     del cancer_imgs, not_cancer_imgs, not_cancer_masks, not_cancer_flags, cancer_targets,\
         not_cancer_targets, cancer_flags
     # Build Datasets
     complete_dataset = ConcatDataset((not_cancer_dataset, cancer_dataset))
+
     length_complete_dataset = len(complete_dataset)
 
     # Build train, val and test set.

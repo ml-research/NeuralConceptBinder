@@ -11,12 +11,13 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 from rtpt import RTPT
-
+import torch.nn.functional as F
+from torchvision import transforms
 
 from sysbinder import SysBinderImageAutoEncoder
-from data import GlobDataset, isic_2019
+from data import GlobDataset, get_isic_2019
 from utils_sysbinder import linear_warmup, cosine_anneal, set_seed
-
+from classifier import SetTransformer #TODO: not integrated yet
 
 torch.set_num_threads(10)
 OMP_NUM_THREADS = 10
@@ -70,11 +71,20 @@ parser.add_argument('--binarize', default=False, action='store_true',
                     help='Should the encodings of the sysbinder be binarized?')
 parser.add_argument('--attention_codes', default=False, action='store_true',
                     help='Should the sysbinder prototype attention values be used as encodings?')
+parser.add_argument('--clf_lambda', type=float, default=0.,
+                    help='Weighting of additional classification loss?')
+parser.add_argument('--no_norm_isic', default=False, action='store_true',
+                    help='The ISIC19 images should not be normalised')
+
 
 def get_args():
     args = parser.parse_args()
 
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    args.norm_isic = True
+    if args.no_norm_isic:
+        args.norm_isic = False
 
     set_seed(args.seed)
     return args
@@ -106,12 +116,9 @@ def main(args):
         for arg in vars(args):
             f.write(f"\n{arg}: {getattr(args, arg)}")
 
-    # train_dataset = GlobDataset(root=args.data_path, phase='train', img_size=args.image_size)
-    # val_dataset = GlobDataset(root=args.data_path, phase='val', img_size=args.image_size)
-
-    datasets, _ = get_isic_2019(datapath=args.data_path)
+    datasets, _ = get_isic_2019(datapath=args.data_path, img_size=128, normalise=args.norm_isic)
     train_dataset = datasets['train']
-    val_dataset = datasets['val']
+    val_dataset = datasets['test']
 
     train_sampler = None
     val_sampler = None
@@ -133,6 +140,7 @@ def main(args):
     log_interval = train_epoch_size // 5
 
     model = SysBinderImageAutoEncoder(args)
+    clf_model = SetTransformer(dim_input=2048, dim_hidden=4096, num_heads=4, dim_output=2, ln=True)
 
     if os.path.isfile(args.checkpoint_path):
         print(f'Loading checkpoint {args.checkpoint_path}...')
@@ -172,6 +180,9 @@ def main(args):
     model = model.to(args.device)
     if args.use_dp:
         model = DP(model)
+    if args.clf_lambda > 0:
+        clf_model = clf_model.to(args.device)
+        clf_model = DP(clf_model)
 
     optimizer = Adam([
         {'params': (x[1] for x in model.named_parameters() if 'dvae' in x[0]), 'lr': args.lr_dvae},
@@ -186,7 +197,7 @@ def main(args):
             pass
 
     # Create and start RTPT object
-    rtpt = RTPT(name_initials='WS', experiment_name=f"SysBinderRetriever",
+    rtpt = RTPT(name_initials='WS', experiment_name=f"NCB",
                 max_iterations=args.epochs-start_epoch)
     rtpt.start()
 
@@ -200,7 +211,7 @@ def main(args):
                 model.module.image_encoder.sysbinder.prototype_memory.attn.temp *= 0.5
             print(f'Current temperature: {model.module.image_encoder.sysbinder.prototype_memory.attn.temp}')
 
-        for batch, image in enumerate(train_loader):
+        for batch, sample in enumerate(train_loader):
             global_step = epoch * train_epoch_size + batch
 
             tau = cosine_anneal(
@@ -230,11 +241,12 @@ def main(args):
             optimizer.param_groups[1]['lr'] = lr_decay_factor * lr_warmup_factor_enc * args.lr_enc
             optimizer.param_groups[2]['lr'] = lr_decay_factor * lr_warmup_factor_dec * args.lr_dec
 
+            image = sample[0]
             image = image.to(args.device)
 
             optimizer.zero_grad()
 
-            (recon_dvae, cross_entropy, mse, attns) = model(image, tau)
+            (recon_dvae, cross_entropy, mse, attns, _) = model(image, tau)
 
             if args.use_dp:
                 mse = mse.mean()
@@ -273,10 +285,11 @@ def main(args):
             val_cross_entropy = 0.
             val_mse = 0.
 
-            for batch, image in enumerate(val_loader):
+            for batch, sample in enumerate(val_loader):
+                image = sample[0]
                 image = image.to(args.device)
 
-                (recon_dvae, cross_entropy, mse, attns) = model(image, tau)
+                (recon_dvae, cross_entropy, mse, attns, _) = model(image, tau)
 
                 if args.use_dp:
                     mse = mse.mean()

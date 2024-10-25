@@ -230,7 +230,7 @@ def main(args):
 
             optimizer.zero_grad()
 
-            (recon_dvae, cross_entropy, mse, attns) = model(image, tau)
+            (recon_dvae, cross_entropy, mse, attns, _) = model(image, tau)
 
             if args.use_dp:
                 mse = mse.mean()
@@ -272,7 +272,7 @@ def main(args):
             for batch, image in enumerate(val_loader):
                 image = image.to(args.device)
 
-                (recon_dvae, cross_entropy, mse, attns) = model(image, tau)
+                (recon_dvae, cross_entropy, mse, attns, _) = model(image, tau)
 
                 if args.use_dp:
                     mse = mse.mean()
