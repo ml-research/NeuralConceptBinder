@@ -115,7 +115,7 @@ parser.add_argument(
 	)
 parser.add_argument('--no_norm_isic', default=False, action='store_true',
                     help='The ISIC19 images should not be normalised')
-parser.add_argument('--num_clustering_samples', type=int, default=5000,
+parser.add_argument('--num_samples_clustering', type=int, default=5000,
                     help='The number of image samples that should be used for clustering.')
 
 
@@ -561,7 +561,7 @@ def gather_obj_encs(model, loader, args):
 
 		all_img_locs.extend(img_locs)
 
-		if i * args.batch_size > args.num_clustering_samples:
+		if i * args.batch_size > args.num_samples_clustering:
 			break
 
 	all_encs = np.concatenate(all_encs, axis=0)
