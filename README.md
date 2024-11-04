@@ -25,7 +25,7 @@ and [CLEVR-1](https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV
 
 These represent versions of the original datasets that contain single objects.
 
-We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiJ7Jm5YwLaPjj2Cjj2AxGrH/CLEVR-4-1-cls.zip)
+We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiJ7Jm5YwLaPjj2Cjj2AxGrH/CLEVR-4-1-cls.zip)(single object) and [here](https://hessenbox.tu-darmstadt.de/getlink/fiDrNmUD4dMihFzhg8qigguo/CLEVR-4-4-cls.zip)(multi object)
 (Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how to generate your own dataset and to download 
 the original CLEVR-Hans dataset).
 
@@ -40,7 +40,7 @@ You can find the ckpts of the NLOTM baseline [here](https://hessenbox.tu-darmsta
 We have attached a Dockerfile to make reproduction easier. We further recommend to build your own docker-compose file
 based on the DockerFile. To run without a docker-compose file:
 
-1. ```cd src/docker/```
+1. ```cd docker/```
 
 2. ```docker build -t neuralconceptbinder -f Dockerfile .```
 
