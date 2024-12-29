@@ -131,10 +131,11 @@
                 </span>
                 <!-- Dataset Link. -->
                 <span class="link-block">
-                  <a href="https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip"
+                  <a href="https://huggingface.co/datasets/AIML-TUDA/CLEVR-Sudoku"
                     class="external-link button is-normal is-rounded is-dark" target="_blank">
                     <span class="icon">
-                      <i class="far fa-images"></i>
+                      <!-- <i class="far fa-images"></i> -->
+                      <span>&#129303;</span>
                     </span>
                     <span>CLEVR Sudoku</span>
                   </a>
@@ -174,20 +175,21 @@
             <h2 class="title is-3">Abstract</h2>
             <div class="content has-text-justified">
               <p>
-                The challenge in object-based visual reasoning lies in generating concept representations 
-                that are both descriptive and distinct. Achieving this in an unsupervised manner requires 
-                human users to understand the model's learned concepts and, if necessary, revise incorrect 
-                ones. To address this challenge, we introduce the <span class="method">Neural Concept Binder</span> (NCB), 
-                a novel framework for deriving both discrete and continuous concept representations, which 
-                we refer to as “concept-slot encodings”. NCB employs two types of binding: “soft binding”, 
-                which leverages the recent SysBinder mechanism to obtain object-factor encodings, and subsequent 
-                “hard binding”, achieved through hierarchical clustering and retrieval-based inference. 
-                This enables obtaining expressive, discrete representations from unlabeled images. 
-                Moreover, the structured nature of NCB's concept representations allows for intuitive 
-                inspection and the straightforward integration of external knowledge, such as human input 
-                or insights from other AI models like GPT-4. Additionally, we demonstrate that incorporating 
-                the hard binding mechanism preserves model performance while enabling seamless integration into 
-                both neural and symbolic modules for complex reasoning tasks. We validate the effectiveness of 
+                The challenge in object-based visual reasoning lies in generating concept representations
+                that are both descriptive and distinct. Achieving this in an unsupervised manner requires
+                human users to understand the model's learned concepts and, if necessary, revise incorrect
+                ones. To address this challenge, we introduce the <span class="method">Neural Concept Binder</span>
+                (NCB),
+                a novel framework for deriving both discrete and continuous concept representations, which
+                we refer to as “concept-slot encodings”. NCB employs two types of binding: “soft binding”,
+                which leverages the recent SysBinder mechanism to obtain object-factor encodings, and subsequent
+                “hard binding”, achieved through hierarchical clustering and retrieval-based inference.
+                This enables obtaining expressive, discrete representations from unlabeled images.
+                Moreover, the structured nature of NCB's concept representations allows for intuitive
+                inspection and the straightforward integration of external knowledge, such as human input
+                or insights from other AI models like GPT-4. Additionally, we demonstrate that incorporating
+                the hard binding mechanism preserves model performance while enabling seamless integration into
+                both neural and symbolic modules for complex reasoning tasks. We validate the effectiveness of
                 NCB through evaluations on our newly introduced CLEVR-Sudoku dataset.
               </p>
             </div>
@@ -229,12 +231,14 @@
         <div class="column is-four-fifths">
           <h2 class="title is-3">NCB Step by Step</h2>
           <video style="width: 100%; max-width: 1000px; height: auto;" controls>
-          <source src="./static/images/Presentation_website.mp4" type="video/mp4">
-          <p>Your browser does not support the video element. <a href="./static/images/Presentation_website.mp4">Download the video</a>.</p>          </video>
+            <source src="./static/images/Presentation_website.mp4" type="video/mp4">
+            <p>Your browser does not support the video element. <a
+                href="./static/images/Presentation_website.mp4">Download the video</a>.</p>
+          </video>
         </div>
       </div>
       <!--/ Video Embed Section -->
-      
+
       <!-- Interpretability. -->
       <div class="columns is-centered">
         <div class="column is-full-width">
@@ -276,22 +280,23 @@
                 varying degrees of difficulty. Each image is annotated with the correct solution to the puzzle, which
                 serves as the ground truth for evaluating the model's performance.
               </p>
-                <p><strong>
-                  CLEVR-Sudoku requires visual perception as well as deductive reasoning skills. Now you can try solving the puzzles yourself directly on this website! 
+              <p><strong>
+                  CLEVR-Sudoku requires visual perception as well as deductive reasoning skills. Now you can try solving
+                  the puzzles yourself directly on this website!
                   Simply place the images where you think they belong and see if its right!
                 </strong></p>
-    
-                <!-- Call to Action Button -->
-                <div class="has-text-centered">
-                  <a href="#sudoku-container" class="button is-primary is-large is-rounded">
-                    <span class="icon">
-                      <i class="fas fa-play-circle"></i>
-                    </span>
-                    <span>
-                      Play CLEVR-Sudoku Now!
-                    </span>
-                  </a>
-                </div>
+
+              <!-- Call to Action Button -->
+              <div class="has-text-centered">
+                <a href="#sudoku-container" class="button is-primary is-large is-rounded">
+                  <span class="icon">
+                    <i class="fas fa-play-circle"></i>
+                  </span>
+                  <span>
+                    Play CLEVR-Sudoku Now!
+                  </span>
+                </a>
+              </div>
             </div>
 
             <!-- Sudoku -->
@@ -364,11 +369,16 @@
         <div class="column is-8">
           <div class="content">
             <p>
-              This work was supported by the Priority Program (SPP) 2422 in the subproject “Optimization of active surface design 
-              of high-speed progressive tools using machine and deep learning algorithms“ funded by the German Research Foundation (DFG), 
-              the ”ML2MT” project from the Volkswagen Stiftung and the ”The Adaptive Mind” project from the Hessian Ministry of Science 
-              and Arts (HMWK). It has further benefited from the HMWK projects ”The Third Wave of Artificial Intelligence - 3AI”, 
-              and Hessian.AI, as well as the Hessian research priority program LOEWE within the project WhiteBox, and the EU-funded 
+              This work was supported by the Priority Program (SPP) 2422 in the subproject “Optimization of active
+              surface design
+              of high-speed progressive tools using machine and deep learning algorithms“ funded by the German Research
+              Foundation (DFG),
+              the ”ML2MT” project from the Volkswagen Stiftung and the ”The Adaptive Mind” project from the Hessian
+              Ministry of Science
+              and Arts (HMWK). It has further benefited from the HMWK projects ”The Third Wave of Artificial
+              Intelligence - 3AI”,
+              and Hessian.AI, as well as the Hessian research priority program LOEWE within the project WhiteBox, and
+              the EU-funded
               “TANGO” project (EU Horizon 2023, GA No 57100431).
             </p>
             <p>The website template is based on the source code of <a
