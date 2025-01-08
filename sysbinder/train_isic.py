@@ -15,7 +15,7 @@ import torch.nn.functional as F
 from torchvision import transforms
 
 from sysbinder import SysBinderImageAutoEncoder
-from data import GlobDataset, get_isic_2019
+from data import GlobDataset, get_isic_2019, get_isic_2019_segmented
 from utils_sysbinder import linear_warmup, cosine_anneal, set_seed
 from classifier import SetTransformer #TODO: not integrated yet
 
@@ -75,6 +75,9 @@ parser.add_argument('--clf_lambda', type=float, default=0.,
                     help='Weighting of additional classification loss?')
 parser.add_argument('--no_norm_isic', default=False, action='store_true',
                     help='The ISIC19 images should not be normalised')
+parser.add_argument('--segmented_isic', default=False, action='store_true',
+                    help='The ISIC19 images should be segmented, i.e., only contain the skin lesions.')
+
 
 
 def get_args():
@@ -110,13 +113,16 @@ def main(args):
     arg_str_list = ['{}={}'.format(k, v) for k, v in vars(args).items()]
     arg_str = '__'.join(arg_str_list)
     log_dir = os.path.join(args.log_path, datetime.today().isoformat())
-    writer = SummaryWriter(log_dir)
-    writer.add_text('hparams', arg_str)
-    with open(os.path.join(writer.log_dir,'commandline_args.txt'), 'w') as f:
-        for arg in vars(args):
-            f.write(f"\n{arg}: {getattr(args, arg)}")
+    # writer = SummaryWriter(log_dir)
+    # writer.add_text('hparams', arg_str)
+    # with open(os.path.join(writer.log_dir,'commandline_args.txt'), 'w') as f:
+    #     for arg in vars(args):
+    #         f.write(f"\n{arg}: {getattr(args, arg)}")
 
-    datasets, _ = get_isic_2019(datapath=args.data_path, img_size=128, normalise=args.norm_isic)
+    if not args.segmented_isic:
+        datasets, _ = get_isic_2019(datapath=args.data_path, img_size=128, normalise=args.norm_isic)
+    else:
+        datasets, _ = get_isic_2019_segmented(datapath=args.data_path, img_size=128, normalise=args.norm_isic)
     train_dataset = datasets['train']
     val_dataset = datasets['test']
 

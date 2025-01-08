@@ -47,13 +47,9 @@ def get_isic_2019(datapath, img_size=None, number_nc=None, number_c=None, normal
     Load ISIC Skin Cancer 2019 dataset. 
     Return train and test set Dataloaders.
 
-    Args:
-        batch_size: specifies the batch size.
-        train_shuffle: sets the pytorch Dataloader attribute 'shuffle' which 
-            'have the data reshuffled at every epoch'.
+    Args (some):
         number_c: limit the number of cancer images.
         number_nc: limit the number of not-cancer images.
-        ce_augment: augments the datasets with counterexamples based on the masks (used for CE).
         informative_indices_filename: Filepath to file which stores the indices of the most
             informative instances (use method in explainer.py method to generate file)
     """
@@ -231,4 +227,226 @@ def get_isic_2019(datapath, img_size=None, number_nc=None, number_c=None, normal
 
     print(f"  --> Build finished: Took {elap} sec!")
     print("--------Dataset Done--------\n")
+    return datasets, weights
+
+
+def get_isic_2019_segmented(datapath, img_size=None, number_nc=None, number_c=None, normalise=True,
+                   all_segmented=True, invert_seg_hint_masks=False):
+    """
+    Load ISIC Skin Cancer 2019 dataset for the HINT.
+    Return train, validation and test Dataloaders.
+
+    (Used for HINT method and Reward vs. Penalize experiment)
+
+    Args (some):
+        number_c: limit the number of cancer images.
+        number_nc: limit the number of not-cancer images.
+        all_segmented: set to True if all of the available right reason mask should be used.
+            If False then only instances with a patch get the hint masks.
+        invert_seg_hint_masks: if True then masks penalize whole background.
+    """
+    print("\n----------Dataset (HINT)------")
+    # datapath = "data_store/rawdata/ISIC_2019/ISIC19/"
+    start = time.time()
+    try:
+        print("  Read in data from .h5 files...")
+        with h5py.File(datapath + 'not_cancer_imgs.h5', 'r') as hf:
+            if number_nc is not None:
+                not_cancer_imgs = hf['not_cancer_imgs'][:number_nc]
+            else:
+                not_cancer_imgs = hf['not_cancer_imgs'][:]
+        with h5py.File(datapath + 'not_cancer_masks_hint.h5', 'r') as hf:
+            if number_nc is not None:
+                not_cancer_masks_hint = hf['not_cancer_masks_hint'][:number_nc]
+            else:
+                not_cancer_masks_hint = hf['not_cancer_masks_hint'][:]
+
+            if invert_seg_hint_masks:
+                not_cancer_masks_hint = (
+                    ~not_cancer_masks_hint.astype(np.bool)).astype(np.float)
+        with h5py.File(datapath + 'not_cancer_flags.h5', 'r') as hf:
+            # indicating wether an instances have a seg mask (1, else 0)
+            if number_nc is not None:
+                not_cancer_flags = hf['not_cancer_flags'][:number_nc]
+            else:
+                not_cancer_flags = hf['not_cancer_flags'][:]
+        with h5py.File(datapath + 'not_cancer_flags_hint.h5', 'r') as hf:
+            # indicating wether an instances have a seg hint mask (1, else 0)
+            if number_nc is not None:
+                not_cancer_flags_hint = hf['not_cancer_flags_hint'][:number_nc]
+            else:
+                not_cancer_flags_hint = hf['not_cancer_flags_hint'][:]
+        with h5py.File(datapath + 'cancer_imgs.h5', 'r') as hf:
+            if number_c is not None:
+                cancer_imgs = hf['cancer_imgs'][:number_c]
+            else:
+                cancer_imgs = hf['cancer_imgs'][:]
+        if all_segmented:
+            with h5py.File(datapath + 'cancer_masks_hint.h5', 'r') as hf:
+                if number_c is not None:
+                    cancer_masks_hint = hf['cancer_masks_hint'][:number_c]
+                else:
+                    cancer_masks_hint = hf['cancer_masks_hint'][:]
+                if invert_seg_hint_masks:
+                    cancer_masks_hint = (
+                        ~cancer_masks_hint.astype(np.bool)).astype(np.float)
+            with h5py.File(datapath + 'cancer_flags_hint.h5', 'r') as hf:
+                if number_c is not None:
+                    cancer_flags_hint = hf['cancer_flags_hint'][:number_c]
+                else:
+                    cancer_flags_hint = hf['cancer_flags_hint'][:]
+    except:
+        raise RuntimeError(
+            "No isic .h5 files found. Please run the setup at setup_isic.py file!")
+
+    end = time.time()
+    elap = int(end - start)
+    print(f"  --> Read in finished: Took {elap} sec!")
+
+    # Multiply original images with segmentations
+    # TODO: check the segmentations are correctly mapped to the original images
+    not_cancer_imgs = not_cancer_imgs * not_cancer_masks_hint
+    cancer_imgs = cancer_imgs * cancer_masks_hint
+
+    if img_size is not None:
+        not_cancer_imgs_resize = np.zeros((not_cancer_imgs.shape[0], not_cancer_imgs.shape[1], img_size, img_size))
+        for n, i in enumerate(not_cancer_imgs):
+            not_cancer_imgs_resize[n, :, :, :] = resize(not_cancer_imgs[n, :, :, :],
+                                                        not_cancer_imgs_resize.shape[1:], anti_aliasing=True)
+        not_cancer_masks_hint_resize = np.zeros((not_cancer_masks_hint.shape[0], not_cancer_masks_hint.shape[1], img_size, img_size))
+        for n, i in enumerate(not_cancer_masks_hint):
+            not_cancer_masks_hint_resize[n, :, :, :] = resize(not_cancer_masks_hint[n, :, :, :],
+                                                        not_cancer_masks_hint_resize.shape[1:], anti_aliasing=True)
+        cancer_imgs_resize = np.zeros((cancer_imgs.shape[0], cancer_imgs.shape[1], img_size, img_size))
+        for n, i in enumerate(cancer_imgs):
+            cancer_imgs_resize[n, :, :, :] = resize(cancer_imgs[n, :, :, :],
+                                                    cancer_imgs_resize.shape[1:], anti_aliasing=True)
+        cancer_masks_hint_resize = np.zeros((cancer_masks_hint.shape[0], cancer_masks_hint.shape[1], img_size, img_size))
+        for n, i in enumerate(cancer_masks_hint):
+            cancer_masks_hint_resize[n, :, :, :] = resize(cancer_masks_hint[n, :, :, :],
+                                                        cancer_masks_hint_resize.shape[1:], anti_aliasing=True)
+        not_cancer_imgs = not_cancer_imgs_resize
+        not_cancer_masks_hint = not_cancer_masks_hint_resize
+        cancer_imgs = cancer_imgs_resize
+        cancer_masks_hint = cancer_masks_hint_resize
+
+        print("Resize data finished!")
+
+    if normalise:
+        print('Normalising data ...')
+        X = np.concatenate((not_cancer_imgs, cancer_imgs))
+        X_min = X.min(axis=(0, 2, 3), keepdims=True)
+        X_max = X.max(axis=(0, 2, 3), keepdims=True)
+        not_cancer_imgs = (not_cancer_imgs - X_min) / (X_max - X_min)
+        cancer_imgs = (cancer_imgs - X_min) / (X_max - X_min)
+
+    # generate labels: cancer=1; no_cancer=0
+    cancer_targets = np.ones((cancer_imgs.shape[0])).astype(np.int64)
+    not_cancer_targets = np.zeros((not_cancer_imgs.shape[0])).astype(np.int64)
+
+    if not all_segmented:
+        del cancer_flags_hint, cancer_masks_hint
+        cancer_flags_hint = np.zeros_like(cancer_targets)
+        cancer_masks_hint = np.zeros((len(cancer_imgs), 1, 299, 299))
+
+        # adapt hint_flags for not_cancer only having only ones if img has patch
+        # according to orginal flags
+        if len(not_cancer_flags) != len(not_cancer_flags_hint):
+            raise RuntimeWarning(
+                f"flags and hint_flags do not match: Flags= {len(not_cancer_flags)} vs. flags hint= {len(not_cancer_flags_hint)}")
+
+        print(
+            f"  HINT FLAGS ADAPTION: Before sum={np.sum(not_cancer_flags_hint)}")
+        not_cancer_flags_hint = not_cancer_flags_hint & not_cancer_flags
+        print(
+            f"  HINT FLAGS ADAPTION: After  sum={np.sum(not_cancer_flags_hint)}")
+
+    # Generate datasets
+    print("  Building datasets...")
+    start = time.time()
+    not_cancer_dataset = TensorDataset(torch.from_numpy(not_cancer_imgs).float(),
+                                       torch.from_numpy(not_cancer_targets),
+                                       torch.from_numpy(not_cancer_masks_hint).float(),
+                                       torch.from_numpy(not_cancer_flags_hint), torch.from_numpy(not_cancer_flags))
+    cancer_dataset = TensorDataset(torch.from_numpy(cancer_imgs).float(),
+                                   torch.from_numpy(cancer_targets),
+                                   torch.from_numpy(cancer_masks_hint).float(),
+                                   torch.from_numpy(cancer_flags_hint), torch.from_numpy(np.zeros_like(cancer_targets)))
+
+    del cancer_imgs, not_cancer_imgs, not_cancer_masks_hint, cancer_masks_hint, not_cancer_flags, cancer_targets,\
+        not_cancer_targets, cancer_flags_hint
+    # Build Datasets
+    complete_dataset = ConcatDataset((not_cancer_dataset, cancer_dataset))
+
+    length_complete_dataset = len(complete_dataset)
+
+    # Build train, val and test set.
+    num_total = len(complete_dataset)
+    num_train = int(0.8 * num_total)
+    num_test = num_total - num_train
+
+    train_dataset, test_dataset_ = torch.utils.data.random_split(complete_dataset,
+                                                                 [num_train, num_test], generator=torch.Generator().manual_seed(0))
+
+    test_dataset_no_patches = torch.utils.data.Subset(complete_dataset,
+                                                      [idx for idx in test_dataset_.indices if complete_dataset[idx][4] == 0])
+    # test with not_cancer images all containing a patch
+    test_dataset = torch.utils.data.Subset(complete_dataset,
+                                           [idx for idx in test_dataset_.indices if complete_dataset[idx][4] == 1
+                                            or complete_dataset[idx][1] == 1])
+
+    # Calculate ratio between cancerous and not_cancerous for the weighted loss in training
+
+    cancer_ratio = len(cancer_dataset) / length_complete_dataset
+    not_cancer_ratio = 1 - cancer_ratio
+    cancer_weight = 1 / cancer_ratio
+    not_cancer_weight = 1 / not_cancer_ratio
+    weights = np.asarray([not_cancer_weight, cancer_weight])
+    weights /= weights.sum()
+    weights = torch.tensor(weights).float()
+
+    datasets = {'train': train_dataset, 'test': test_dataset,
+                'test_no_patches': test_dataset_no_patches}
+    # tt = ConcatDataset((train_dataset, test_dataset_no_patches))
+
+    print("  Sizes of datasets:")
+    print(
+        f"  TRAIN: {len(train_dataset)}, TEST: {len(test_dataset)}, TEST_NO_PATCHES: {len(test_dataset_no_patches)}")
+
+    # only for checking the data distribution in trainset
+    train_classes = [x[1].item() for x in train_dataset]
+    train_patch_dis = [x[3].item() for x in train_dataset]
+
+    # train_classes = [complete_dataset[idx][1].item() for idx in train_dataset.indices]
+    # train_patch_dis = [complete_dataset[idx][3].item() for idx in train_dataset.indices]
+    print(f"  TRAIN class dist: {Counter(train_classes)}")
+    # 0 -> no patch, 1-> patch
+    print(f"  TRAIN mask dist: {Counter(train_patch_dis)}")
+    test_classes = [complete_dataset[idx][1].item()
+                    for idx in test_dataset.indices]
+    print(f"  TEST class dist: {Counter(test_classes)}")
+    test_masks = [complete_dataset[idx][3].item()
+                  for idx in test_dataset.indices]
+    print(f"  TEST mask dist: {Counter(test_masks)}")
+    test_classes_no_patches = [
+        complete_dataset[idx][1].item() for idx in test_dataset_no_patches.indices]
+    print(f"  TEST_NO_PATCHES class dist: {Counter(test_classes_no_patches)}")
+    test_masks_no_patches = [complete_dataset[idx][3].item()
+                             for idx in test_dataset_no_patches.indices]
+    print(f"  TEST_NO_PATCHES mask dist: {Counter(test_masks_no_patches)}")
+    print(f"  Loss weights: {str(weights)}")
+
+    # dataloaders = {}
+    # dataloaders['train'] = DataLoader(datasets['train'], batch_size=batch_size,
+    #                                   shuffle=train_shuffle)
+    # dataloaders['test'] = DataLoader(datasets['test'], batch_size=batch_size,
+    #                                  shuffle=False)
+    # dataloaders['test_no_patches'] = DataLoader(datasets['test_no_patches'], batch_size=batch_size,
+    #                                             shuffle=False)
+
+    end = time.time()
+    elap = int(end - start)
+    print(f"  --> Build finished: Took {elap} sec!")
+    print("--------Dataset Done--------\n")
+
     return datasets, weights

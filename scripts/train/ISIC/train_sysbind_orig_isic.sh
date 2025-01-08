@@ -11,4 +11,4 @@ CUDA_VISIBLE_DEVICES=$DEVICE python sysbinder/train_isic.py \
 --epochs 400 --num_iterations 3 --num_slots 4 --num_blocks 8 --cnn_hidden_size 512 --slot_size 2048 \
 --mlp_hidden_size 192 --num_prototypes 64 --vocab_size 4096 --num_decoder_layers 8 --num_decoder_heads 4 \
 --d_model 192 --dropout 0.1 --tau_start 1.0 --tau_final 0.1 --tau_steps 30000 --use_dp --temp 1. \
---data_path '/workspace/datasets/ISIC19/' \
+--data_path '/workspace/datasets/ISIC19/' --segmented_isic \
