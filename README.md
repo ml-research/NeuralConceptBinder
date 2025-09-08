@@ -11,28 +11,28 @@ Here we provide information on how to download the novel and evaluated datasets.
 
 ### CLEVR-Sudoku
 
-We provide our novel CLEVR-Sudoku dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fi5RUb2R7UobPiFBzorpEYPT/CLEVR_SUDOKU.zip). In the following, you can find an example of a CLEVR-Sudoku: 
+We provide our novel CLEVR-Sudoku dataset [here](https://next.hessenbox.de/index.php/s/YxYd27Ws3J6zM9o). In the following, you can find an example of a CLEVR-Sudoku: 
 
 <img src="./figures/sudoku.png" height=300>
 
 For the CLEVR-Easy dataset we refer to <https://github.com/singhgautam/sysbinder>.
 
-We provide the used CLEVR dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiTkYuSoR2VvA2JLj7EACkxo/CLEVR-4.zip).
+We provide the used CLEVR dataset [here](https://next.hessenbox.de/index.php/s/QCq796G7A8F9jzE).
 
 We provide the datasets used to finetune NCBs hard binder (i.e., distill the concepts) at:
-[CLEVR-Easy-1](https://hessenbox.tu-darmstadt.de/getlink/fiHHPQ537ViPaxdz6vD7e2d5/CLEVR-Easy-1.zip) 
-and [CLEVR-1](https://hessenbox.tu-darmstadt.de/getlink/fiVCLMaZkEuf5f6HYG58sshV/CLEVR-4-1.zip).
+[CLEVR-Easy-1](https://next.hessenbox.de/index.php/s/jBHLJtxCsyBG24j) 
+and [CLEVR-1](https://next.hessenbox.de/index.php/s/zakK5weC4iSGjj9).
 
 These represent versions of the original datasets that contain single objects.
 
-We provide the CLEVR-Hans classification dataset [here](https://hessenbox.tu-darmstadt.de/getlink/fiJ7Jm5YwLaPjj2Cjj2AxGrH/CLEVR-4-1-cls.zip) (single object) and [here](https://hessenbox.tu-darmstadt.de/getlink/fiDrNmUD4dMihFzhg8qigguo/CLEVR-4-4-cls.zip) (multi object)
+We provide the CLEVR-Hans classification dataset [here](https://next.hessenbox.de/index.php/s/3ixrnRWw3Y7LrDf) (single object) and [here](https://next.hessenbox.de/index.php/s/4zZKrfgFmwZjajD) (multi object)
 (Please visit the [CLEVR-Hans](https://github.com/ml-research/CLEVR-Hans) repository for instructions on how to generate your own dataset in case you are interested).
 
 ## Model Checkpoints
 
-We provide checkpoints of all trained models of our experiments as well as parameter files for [CLEVR-Easy](https://hessenbox.tu-darmstadt.de/getlink/fiNmsxY8anr52RGTwsQtzSxW/CLEVR-Easy.zip)
-and [CLEVR](https://hessenbox.tu-darmstadt.de/getlink/fi6WzuWtQ87Px5P3ewEVNQyZ/CLEVR-4.zip). 
-You can find the ckpts of the NLOTM baseline [here](https://hessenbox.tu-darmstadt.de/getlink/fiLgJBMQgKpaDKD82WDTGwVv/nlotm.zip).
+We provide checkpoints of all trained models of our experiments as well as parameter files for [CLEVR-Easy](https://next.hessenbox.de/index.php/s/53j7NpFxE9GgTr8)
+and [CLEVR](https://next.hessenbox.de/index.php/s/6a2sKJ3FSeqJrQn). 
+You can find the ckpts of the NLOTM baseline [here](https://next.hessenbox.de/index.php/s/x74TbYesSzaNKqX).
 
 ## Docker
 
